@@ -78,7 +78,7 @@ int main(int argc, char** argv)
 
 	// Create compute pipeline.
 	std::vector<char> shaderContents;
-	if (std::ifstream shaderFile{ "square.spv", std::ios::binary | std::ios::ate })
+	if (std::ifstream shaderFile{ "D:/Dev/Luci404/HelloVulkanHpp/square.spv", std::ios::binary | std::ios::ate })
 	{
 		const size_t fileSize = shaderFile.tellg();
 		shaderFile.seekg(0);
