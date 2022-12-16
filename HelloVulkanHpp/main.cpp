@@ -147,6 +147,7 @@ int main(int argc, char** argv)
 	assert(result == vk::Result::eSuccess);
 
 	// Read results.
+	inBufferPtr = static_cast<int32_t*>(device.mapMemory(inBufferMemory, 0, bufferSize));
 	for (uint32_t i = 0; i < numElements; ++i) std::cout << inBufferPtr[i] << " ";
 	std::cout << std::endl;
 	device.unmapMemory(inBufferMemory);
