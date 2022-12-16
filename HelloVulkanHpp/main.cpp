@@ -29,7 +29,8 @@ int main(int argc, char** argv)
 	std::cout << "Compute Queue Family Index: " << computeQueueFamilyIndex << std::endl;
 
 	// Create logical device.
-	vk::DeviceQueueCreateInfo deviceQueueCreateInfo(vk::DeviceQueueCreateFlags(), computeQueueFamilyIndex, 1);
+	const float queuePriority = 1.0f;
+	vk::DeviceQueueCreateInfo deviceQueueCreateInfo(vk::DeviceQueueCreateFlags(), computeQueueFamilyIndex, 1, &queuePriority);
 	vk::DeviceCreateInfo deviceCreateInfo(vk::DeviceCreateFlags(), deviceQueueCreateInfo);
 	vk::Device device = physicalDevice.createDevice(deviceCreateInfo);
 
