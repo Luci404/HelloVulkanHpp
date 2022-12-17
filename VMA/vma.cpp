@@ -3,6 +3,8 @@
 #include <fstream>
 
 #include <vulkan/vulkan.hpp>
+
+#define VMA_IMPLEMENTATION
 #include "vk_mem_alloc.h"
 
 int main(int argc, char** argv)
@@ -193,8 +195,8 @@ int main(int argc, char** argv)
 
 	struct BufferInfo
 	{
-		VkBuffer Buffer;
-		VmaAllocation Allocation;
+		VkBuffer buffer;
+		VmaAllocation allocation;
 	};
 
 	// Lets allocate a couple of buffers to see how they are layed out in memory
@@ -213,19 +215,14 @@ int main(int argc, char** argv)
 		allocationInfo.usage = Usage;
 
 		BufferInfo info;
-		vmaCreateBuffer(allocator,
-			&bufferCreateInfo,
-			&allocationInfo,
-			&info.Buffer,
-			&info.Allocation,
-			nullptr);
+		vmaCreateBuffer(allocator, reinterpret_cast<VkBufferCreateInfo*>(&bufferCreateInfo), &allocationInfo, &info.buffer, &info.allocation, nullptr);
 
 		return info;
 	};
 
-	auto DestroyBuffer = [allocator](BufferInfo Info)
+	auto DestroyBuffer = [allocator](BufferInfo info)
 	{
-		vmaDestroyBuffer(allocator, Info.Buffer, Info.Allocation);
+		vmaDestroyBuffer(allocator, info.buffer, info.allocation);
 	};
 
 	constexpr size_t MB = 1024 * 1024;
@@ -235,7 +232,6 @@ int main(int argc, char** argv)
 	BufferInfo B4 = AllocateBuffer(100 * MB, VMA_MEMORY_USAGE_CPU_ONLY);
 
 	{
-		VmaStatistics statistics;
 		char* statisticsString = nullptr;
 		vmaBuildStatsString(allocator, &statisticsString, true);
 		{
@@ -260,7 +256,6 @@ int main(int argc, char** argv)
 	device.unmapMemory(outBufferMemory);*/
 
 	{
-		VmaStatistics statistics;
 		char* statisticsString = nullptr;
 		vmaBuildStatsString(allocator, &statisticsString, true);
 		{
